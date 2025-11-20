@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>News Search</title>
+    <style>
+      body{
+        padding: 25px;
+        font-family: Arial, sans-serif;
+        background-image: url('https://foto.wuestenigel.com/wp-content/uploads/api/ocean-waves-breaking-on-the-cliffy-coast-ozeanwellen-die-auf-die-cliffy-kuste-brechen.jpeg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: #333;
+      }
+      .title {
+        color: white;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .search-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+      }
+
+      #searchInput {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 60%;
+        max-width: 400px;
+        margin-right: 10px;
+        font-size: 16px;
+      }
+
+      #searchButton {
+        padding: 10px 20px;
+        background-color: #5C6AC4;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      #searchButton:hover {
+        background-color: #4a57a1;
+      }
+
+      #newsResults {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .news-article {
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      .news-article h3 {
+        color: #5C6AC4;
+        margin-top: 0;
+        font-size: 1.3em;
+      }
+
+      .news-article p {
+        font-size: 0.95em;
+        line-height: 1.5;
+        color: #555;
+      }
+
+      .news-article a {
+        display: inline-block;
+        margin-top: 10px;
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .news-article a:hover {
+        text-decoration: underline;
+      }
+
+      /* Consolidated style for images and videos */
+      .news-article img,
+      .news-article video {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-top: 10px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+      <h1 class="title" onclick="window.location.href='index.html'">Nexa News</h1>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for news..." />
+        <button id="searchButton">Search</button>
+      </div>
+      <div id="newsResults">
+        <p>Enter a topic and click 'Search' to find news articles.</p>
+      </div>
+      <script>
+        const API_KEY = "pub_4a4872611c0a450aba799c7f18f5e361";
+        const API_ENDPOINT = "https://newsdata.io/api/1/latest";
+
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const newsResults = document.getElementById('newsResults');
+
+        async function fetchNews(query) {
+            if (!query) {
+                newsResults.innerHTML = '<p>Please enter a search query.</p>';
+                return;
+            }
+
+            newsResults.innerHTML = '<p>Loading news...</p>'; // Show loading message
+
+            try {
+                const url = `${API_ENDPOINT}?apikey=${API_KEY}&q=${encodeURIComponent(query)}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+
+                if (data.results && data.results.length > 0) {
+                    displayNews(data.results);
+                } else {
+                    newsResults.innerHTML = '<p>No news found for your query. Try a different search term.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                newsResults.innerHTML = '<p>Failed to load news. Please check your internet connection or try again later.</p>';
+            }
+        }
+
+        function displayNews(articles) {
+            newsResults.innerHTML = ''; // Clear previous results
+            articles.forEach(article => {
+                const articleDiv = document.createElement('div');
+                articleDiv.classList.add('news-article');
+
+                const title = document.createElement('h3');
+                title.textContent = article.title;
+
+                const description = document.createElement('p');
+                description.textContent = article.description || 'No description available.';
+
+                // Add image if available
+                if (article.image_url) {
+                    const image = document.createElement('img');
+                    image.src = article.image_url;
+                    image.alt = article.title || 'News image';
+                    articleDiv.appendChild(image);
+                }
+
+                // Add video if available
+                if (article.video_url) {
+                    const video = document.createElement('video');
+                    video.src = article.video_url;
+                    video.controls = true; // Add controls for playback
+                    // Removed redundant inline styles, relying on CSS class
+                    articleDiv.appendChild(video);
+                }
+
+                const link = document.createElement('a');
+                link.href = article.link;
+                link.textContent = 'Read more';
+                link.target = '_blank'; // Open link in a new tab
+                link.rel = 'noopener noreferrer'; // Security best practice for target="_blank"
+
+                articleDiv.appendChild(title);
+                articleDiv.appendChild(description);
+                articleDiv.appendChild(link);
+                newsResults.appendChild(articleDiv);
+            });
+        }
+
+        // Event listener for the search button
+        searchButton.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            fetchNews(query);
+        });
+
+        // Optional: Add an event listener for 'Enter' key press in the input field
+        searchInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                const query = searchInput.value.trim();
+                fetchNews(query);
+            }
+        });
+
+        // Optional: Load some default news when the page loads
+        window.addEventListener('load', () => {
+            fetchNews('technology'); // Example default query
+        });
+      </script>
+  </body>
+</html>
