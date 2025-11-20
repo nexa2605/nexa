@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://tse1.mm.bing.net/th/id/OIP.WnzsmBOKyrXuB0qTN11q-gHaFj?rs=1&pid=ImgDetMain&o=7&rm=3');
+            background-size: cover; 
+            background-position: center; 
+            margin-top: 10px;
+            margin-right: 10px;
+            margin-left: 10px;
+            margin-bottom: 0px;
+            padding: 0;
+            
+        }
+
+        /* Container to center content */
+        .container {
+            width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);\
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Back button style */
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+
+        /* General results section styling */
+        .results-section {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .results-section h2 {
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
+        }
+
+        /* Organic Result Item */
+        .organic-result {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e9ecef;
+        }
+
+        .organic-result:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .organic-result h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 1.2em;
+        }
+
+        .organic-result h3 a {
+            color: #1a0dab; /* Google blue link color */
+            text-decoration: none;
+        }
+
+        .organic-result h3 a:hover {
+            text-decoration: underline;
+        }
+
+        .organic-result .link {
+            color: #006621; /* Google green URL color */
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .organic-result .snippet {
+            color: #545454;
+            line-height: 1.5;
+        }
+
+        /* Knowledge Graph Styling */
+        .knowledge-graph {
+            background-color: #e6f2ff; /* Light blue background */
+            border-left: 5px solid #007bff;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .knowledge-graph h2 {
+            color: #007bff;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: none; /* Remove section border */
+        }
+
+        .knowledge-graph h3 {
+            color: #333;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .knowledge-graph p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .knowledge-graph .profile-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        .knowledge-graph .profile-list li {
+            margin-bottom: 5px;
+        }
+
+        .knowledge-graph .profile-list a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .knowledge-graph .profile-list a:hover {
+            text-decoration: underline;
+        }
+
+        /* Error message style */
+        #resultsDisplay.error {
+            border-left-color: #dc3545; /* Red border for errors */
+            color: #dc3545;
+            background-color: #f8d7da;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        /* Search bar container */
+        .search-container {
+            display: flex;
+            background: white;
+            justify-content: center;
+            align-items: center;
+            width: 1000px; /* Max width for the search bar itself */
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 25px; /* Fully rounded corners */
+            overflow: hidden; /* Ensures input and button stay within rounded border */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            height: 50px;
+            position: absolute;
+            top: 30px;
+            right: 170px;
+            
+            
+            
+        }
+
+        #searchQuery {
+            flex-grow: 1; /* Takes up available space */
+            padding: 12px 20px;
+            border: none;
+            outline: none; /* Remove focus outline */
+            font-size: 1.1em;
+            background-color: transparent;
+            color: #333;
+        }
+
+        #searchBtn {
+            padding: 12px 20px;
+            font-size: 20px;
+            background-color: white; 
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 25px 0 0 25px; /* Rounded only on the right */
+            margin-left: -1px; /* Overlap border for seamless look */
+            height: 50px;
+            font-family: sans-serif;
+            
+        }
+
+    </style>
+</head>
+<body>
+  <br>
+  <br>
+  <br>
+  <br>
+           <div class="search-container">
+          
+            <input type="text" id="searchQuery" placeholder="                 ">
+            <button id="searchBtn"><img class="glass" src="https://th.bing.com/th/id/OIP.pWfCIIvuyY89J6RCMEowMwHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" height="25" width="25"></button>
+        </div>
+        <div id="errorMessage"></div>
+    </div>
+    <div class="container">
+        <h1>Search Results</h1>
+                <div id="resultsDisplay">
+            <!-- Results will be dynamically inserted here -->
+            <p>Loading results...</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const resultsDisplay = document.getElementById('resultsDisplay');
+            const storedResults = sessionStorage.getItem('searchResults');
+
+            if (storedResults) {
+                try {
+                    const jsonData = JSON.parse(storedResults);
+                    resultsDisplay.innerHTML = ''; // Clear "Loading results..."
+
+                    // Display Knowledge Graph if available
+                    if (jsonData.knowledge_graph) {
+                        const kg = jsonData.knowledge_graph;
+                        const kgSection = document.createElement('div');
+                        kgSection.className = 'results-section knowledge-graph';
+                        kgSection.innerHTML = `<h2>Nexa Knowledge</h2>`;
+
+                        if (kg.title) { // Assuming a title might be present in a full KG response
+                            kgSection.innerHTML += `<h3>${kg.title}</h3>`;
+                        }
+                        if (kg.description) { // Assuming a description might be present
+                            kgSection.innerHTML += `<p>${kg.description}</p>`;
+                        }
+                        if (kg.born) {
+                            kgSection.innerHTML += `<p><strong>Born:</strong> ${kg.born}</p>`;
+                        }
+                        if (kg.profiles && kg.profiles.length > 0) {
+                            let profileList = '<ul class="profile-list"><strong>Profiles:</strong>';
+                            kg.profiles.forEach(profile => {
+                                profileList += `<li><a href="${profile.url}" target="_blank">${profile.name}</a></li>`;
+                            });
+                            profileList += '</ul>';
+                            kgSection.innerHTML += profileList;
+                        }
+                        // Add other knowledge graph attributes as needed
+                        resultsDisplay.appendChild(kgSection);
+                    }
+
+                    // Display Organic Results if available
+                    if (jsonData.organic_results && jsonData.organic_results.length > 0) {
+                        const organicSection = document.createElement('div');
+                        organicSection.className = 'results-section';
+                        organicSection.innerHTML = `<h2>Search Results...</h2>`;
+
+                        jsonData.organic_results.forEach(result => {
+                            const resultDiv = document.createElement('div');
+                            resultDiv.className = 'organic-result';
+                            
+                            // Create title element
+                            let titleElement = document.createElement('h3');
+                            if (result.url) { // Only create a link if result.link exists
+                                let linkElement = document.createElement('a');
+                                linkElement.href = result.url;
+                                linkElement.target = '_blank';
+                                linkElement.textContent = result.title;
+                                titleElement.appendChild(linkElement);
+                            } else {
+                                titleElement.textContent = result.title;
+                            }
+
+                            // Create link span
+                            let linkSpan = document.createElement('span');
+                            linkSpan.className = 'link';
+                            linkSpan.textContent = result.url || 'Link not available'; // Display 'Link not available' if no link
+
+                            // Create snippet paragraph
+                            let snippetParagraph = document.createElement('p');
+                            snippetParagraph.className = 'snippet';
+                            snippetParagraph.textContent = result.snippet;
+
+                            // Append elements to resultDiv
+                            resultDiv.appendChild(titleElement);
+                            resultDiv.appendChild(linkSpan);
+                            resultDiv.appendChild(snippetParagraph);
+
+                            organicSection.appendChild(resultDiv);
+                        });
+                        resultsDisplay.appendChild(organicSection);
+                    }
+
+                    // Display other sections (e.g., related questions, news results) as needed
+                    // For now, if no specific sections are displayed, show a fallback
+                    if (!jsonData.knowledge_graph && (!jsonData.organic_results || jsonData.organic_results.length === 0)) {
+                        resultsDisplay.innerHTML = `<p>No structured search results found for your query. Here's the raw JSON:</p><pre>${storedResults}</pre>`;
+                        // Optionally, you could still apply syntax highlighting to the raw JSON fallback
+                        // resultsDisplay.innerHTML = `<p>No structured search results found for your query. Here's the raw JSON:</p><pre>${syntaxHighlight(storedResults)}</pre>`;
+                    }
+
+                    sessionStorage.removeItem('searchResults'); // Clear after displaying
+
+                } catch (e) {
+                    resultsDisplay.textContent = "Error processing search results: " + e.message;
+                    resultsDisplay.classList.add('error');
+                    console.error("Error processing JSON:", e);
+                }
+            } else {
+                resultsDisplay.textContent = "No search results found or an error occurred during search. Please go back and try again.";
+                resultsDisplay.classList.add('error');
+            }
+        });
+
+        // The syntaxHighlight function is no longer needed if you're structuring the output,
+        // but kept here commented out in case you want to use it for a fallback raw JSON display.
+        /*
+        function syntaxHighlight(json) {
+            if (typeof json != 'string') {
+                json = JSON.stringify(json, undefined, 2);
+            }
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/(\"(\\\\u[a-zA-Z0-9]{4}|\\\\[^u]|[^\\\\\"])*\"(\\s*:)?|\\b(true|false|null)\\b|-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?)/g, function (match) {
+                let cls = 'json-number';
+                if (/^\"/.test(match)) {\
+                    if (/:$/.test(match)) {\
+                        cls = 'json-key';
+                    } else {\
+                        cls = 'json-string';
+                    }
+                } else if (/true|false/.test(match)) {\
+                    cls = 'json-boolean';
+                } else if (/null/.test(match)) {\
+                    cls = 'json-null';
+                }
+                return '<span class=\"' + cls + '\">' + match + '</span>';
+            }).replace(/([\\[\\]\\{\\},:])/g, '<span class=\"json-punctuation\">$1</span>');
+        }
+        */
+        // Replace with your SerpStack API key
+        const API_KEY = "339b9eb9a94f9b8a9e4d4a91b33a79be";
+
+        document.getElementById("searchBtn").addEventListener("click", async () => {
+            const query = document.getElementById("searchQuery").value;
+            const errorMessageDiv = document.getElementById("errorMessage");
+            errorMessageDiv.textContent = ''; // Clear previous errors
+
+            if (!query) {
+                errorMessageDiv.textContent = "Please enter a search term.";
+                return;
+            }
+
+            const url = `https://api.serpstack.com/search?access_key=${API_KEY}&query=${encodeURIComponent(query)}`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`HTTP error! Status: ${response.status} - ${errorData.error.info || 'Unknown error'}`);
+                }
+
+                const data = await response.json();
+                // Store the data in sessionStorage and redirect
+                
+                sessionStorage.setItem('searchResults', JSON.stringify(data, null, 2));
+                window.location.href = 'results.html';
+
+            } catch (error) {
+                errorMessageDiv.textContent = `Error: ${error.message}`;
+                console.error("Search error:", error);
+            }
+        });
+    </script>
+</body>
+</html>
