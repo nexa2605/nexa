@@ -1,0 +1,88 @@
+<!-- Language: HTML -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexaOS Settings</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="sidebar">
+  <h2>Nexa SO Settings</h2>
+  <ul>
+    <li class="active" onclick="showCategory('system')">System</li>
+    <li onclick="showCategory('display')">Display</li>
+    
+  </ul>
+</div>
+<!-- Dock / Taskbar --> 
+<div id="dock"> 
+<div class="dock-icon" onclick="window.location.href='apps.html'">Apps</div>
+<div class="dock-icon" onclick="window.location.href='script.html'">Script</div> 
+<div class="dock-icon-lit" onclick="window.location.href='so2605.html'">Exit Settings</div> 
+</div>
+
+<div class="content" id="content-panel">
+  <!-- System Category Example -->
+  <div class="category" id="system">
+    <div class="card">
+      <div class="card-header" onclick="toggleCard(this)">General Settings</div>
+      <div class="card-content">
+        <label>Enable system notifications: <div class="toggle" onclick="toggleSwitch(this)"></div></label>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" onclick="toggleCard(this)">Date & Time</div>
+      <div class="card-content">
+        <label for="datetime">Set date/time:</label>
+        <input type="datetime-local" id="datetime">
+      </div>
+    </div>
+  </div>
+  <div class="content" id="content-panel">
+  <!-- System Category Example -->
+  <div class="category" id="display">
+    <div class="card">
+      <div class="card-header" onclick="toggleCard(this)">Dark Mode</div>
+      <div class="card-content">
+        <label>Dark Mode ON/OFF <div class="toggle" onclick="toggleSwitch(this)"></div></label>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Other categories can be duplicated similarly with id = display, network, users, etc. -->
+</div>
+
+<script>
+  // Toggle sidebar categories
+  function showCategory(cat) {
+    const categories = document.querySelectorAll('.category');
+    categories.forEach(c => c.style.display = 'none');
+    document.getElementById(cat).style.display = 'block';
+
+    // Highlight sidebar
+    document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  // Collapsible cards
+  function toggleCard(header) {
+    const content = header.nextElementSibling;
+    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+  }
+
+  // Toggle switches
+  function toggleSwitch(toggle) {
+    toggle.classList.toggle('active');
+    event.stopPropagation();
+  }
+
+  // Initialize first category visible
+  showCategory('system');
+</script>
+
+</body>
+</html>
